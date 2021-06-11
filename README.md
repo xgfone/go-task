@@ -1,4 +1,4 @@
-# go-task [![Build Status](https://travis-ci.org/xgfone/go-task.svg?branch=master)](https://travis-ci.org/xgfone/go-task) [![GoDoc](https://godoc.org/github.com/xgfone/go-task?status.svg)](https://pkg.go.dev/github.com/xgfone/go-task) [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg?style=flat-square)](https://raw.githubusercontent.com/xgfone/go-task/master/LICENSE)
+# go-task [![Build Status](https://api.travis-ci.com/xgfone/go-task.svg?branch=master)](https://travis-ci.com/github/xgfone/go-task) [![GoDoc](https://pkg.go.dev/badge/github.com/xgfone/go-task)](https://pkg.go.dev/github.com/xgfone/go-task) [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg?style=flat-square)](https://raw.githubusercontent.com/xgfone/go-task/master/LICENSE)
 
 It supplies some task runners to run the task. Support `Go1.7+`.
 
