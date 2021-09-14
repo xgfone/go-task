@@ -142,7 +142,7 @@ func NewIntervalRunner(config *IntervalRunnerConfig) Runner {
 	}
 
 	c.init()
-	src := rand.NewSource(time.Now().UnixMicro())
+	src := rand.NewSource(time.Now().UnixNano())
 	r := &intervalRunner{
 		jitter:   int64(c.Jitter),
 		random:   rand.New(src),
