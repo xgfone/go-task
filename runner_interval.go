@@ -18,6 +18,7 @@ import (
 	"context"
 	"fmt"
 	"log"
+	"math/rand"
 	"sync"
 	"time"
 )
@@ -80,6 +81,13 @@ type IntervalRunnerConfig struct {
 	// Default: 1m
 	Interval time.Duration
 
+	// Jitter is used to produce a random duration, [0, Jitter],
+	// to be added to the interval duration of the task to avoid
+	// converging on periodic behavior. If 0, disalbe it.
+	//
+	// Default: 0
+	Jitter time.Duration
+
 	// The clock tick interval.
 	//
 	// Default: 5s
@@ -111,6 +119,8 @@ func (c *IntervalRunnerConfig) init() {
 
 // intervalRunner is a task runner to run the tasks at regular intervals.
 type intervalRunner struct {
+	jitter   int64
+	random   *rand.Rand
 	interval time.Duration
 	logerror func(string, ...interface{})
 	canRun   func() bool
@@ -132,7 +142,10 @@ func NewIntervalRunner(config *IntervalRunnerConfig) Runner {
 	}
 
 	c.init()
+	src := rand.NewSource(time.Now().UnixMicro())
 	r := &intervalRunner{
+		jitter:   int64(c.Jitter),
+		random:   rand.New(src),
 		interval: c.Interval,
 		logerror: c.ErrorLog,
 		canRun:   c.CanRun,
@@ -194,6 +207,10 @@ func (r *intervalRunner) loop(tick time.Duration) {
 						if iv := itask.Interval(); iv > 0 {
 							interval = iv
 						}
+					}
+
+					if r.jitter > 0 {
+						interval += time.Duration(r.random.Int63n(r.jitter))
 					}
 
 					if now.Sub(last) >= interval {
